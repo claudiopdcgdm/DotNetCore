@@ -1,0 +1,115 @@
+# =========================
+
+# .NET Core / .NET 5
+
+# =========================
+
+## Build results
+
+bin/
+obj/
+out/
+publish/
+
+## Visual Studio
+
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider / JetBrains
+
+.idea/
+*.sln.iml
+
+## VS Code
+
+.vscode/
+
+## Logs
+
+*.log
+
+## ASP.NET Scaffolding
+
+ScaffoldingReadMe.txt
+
+## Environment variables
+
+.env
+
+## Secrets
+
+appsettings.Development.json
+appsettings.*.json
+
+# (opcional - cuidado ao usar em produção)
+
+# Se quiser versionar config base, remova essa linha:
+
+# appsettings.json
+
+## IIS / Express
+
+iisexpress/
+*.vspscc
+*.vssscc
+
+## NuGet
+
+*.nupkg
+*.snupkg
+packages/
+.nuget/packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Test Results
+
+TestResults/
+*.trx
+
+## Coverage
+
+coverage/
+*.coverage
+*.coveragexml
+
+## OS files
+
+# Windows
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Mac
+
+.DS_Store
+
+## Docker
+
+docker-compose.override.yml
+
+## Publish output
+
+*.publishproj
+
+## Resharper
+
+_ReSharper*/
+*.DotSettings.user
+
+## Azure
+
+*.azurePubxml
+
+## Others
+
+*.swp
+*.tmp
+*.bak
+*.cache
