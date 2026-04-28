@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proeventos.Application.Interfaces;
 using Proeventos.Domain;
+using Proeventos.DTO;
 
 [Route("api/[controller]")]
     public class EventoController : ControllerBase
@@ -20,6 +21,7 @@ using Proeventos.Domain;
         {
             try
             {
+                // var teste = new EventoDto();
                 var eventos = await _eventoService.GetAllEventoAsync(palestrante);
                 return eventos != null ? Ok(eventos) : NotFound("Nenhum evento encontrado!");
             }

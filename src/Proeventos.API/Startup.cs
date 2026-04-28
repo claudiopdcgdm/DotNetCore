@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,17 +25,16 @@ namespace Proeventos.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors();//Adiciona o cors
+            services.AddScoped<IEventoService, EventoService>(); //injeta a classe concreta no scopo
+            services.AddScoped<IEventoPersistence, EventoPersistence>(); //injeta a classe concreta no scopo
+            services.AddScoped<IPalestrantePersistence, PalestantePersistence>(); //injeta a classe concreta no scopo
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//puxa a classe eventoprofile dentro de helpers para mapeamento
             services.AddControllers()
                     //Corrigi o erro de chamada ciclica dos objetos do dominio
                     .AddNewtonsoftJson(
                         c => c.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                     );
-            services.AddCors();
-
-            services.AddScoped<IEventoService, EventoService>(); //injeta a classe concreta no scopo
-            services.AddScoped<IEventoPersistence, EventoPersistence>(); //injeta a classe concreta no scopo
-            services.AddScoped<IPalestrantePersistence, PalestantePersistence>(); //injeta a classe concreta no scopo
-            
             services.AddDbContext<ProeventosContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
