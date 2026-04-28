@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proeventos.Application.Interfaces;
-using Proeventos.Domain;
 using Proeventos.DTO;
 
 [Route("api/[controller]")]
@@ -21,6 +20,7 @@ using Proeventos.DTO;
         {
             try
             {
+                
                 // var teste = new EventoDto();
                 var eventos = await _eventoService.GetAllEventoAsync(palestrante);
                 return eventos != null ? Ok(eventos) : NotFound("Nenhum evento encontrado!");
@@ -64,7 +64,7 @@ using Proeventos.DTO;
 
         [HttpPost]
         // [Consumes("application/json", "multipart/form-data")]
-        public async Task<ActionResult> Post([FromBody] Evento model)
+        public async Task<ActionResult> Post([FromBody] EventoDto model)
         {
             try
             {
@@ -78,7 +78,7 @@ using Proeventos.DTO;
         }  
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] Evento model)
+        public async Task<ActionResult> Update(int id, [FromBody] EventoDto model)
         {
             try
             {

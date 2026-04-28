@@ -2,14 +2,13 @@ using AutoMapper;
 using Proeventos.Domain;
 using Proeventos.DTO;
 
-namespace Proeventos.API.Helpers
+namespace Proeventos.Application.Helpers
 {
     public class EventoProfile:Profile
     {
         public EventoProfile()
         {
-            CreateMap<Evento,EventoDto>();
+            CreateMap<Evento, EventoDto>();
         }
-        
     }
 }
