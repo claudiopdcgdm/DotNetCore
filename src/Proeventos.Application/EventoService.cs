@@ -24,12 +24,17 @@ namespace Proeventos.Application
         {
             try
             {
-                // _eventoPersistence.Add<Evento>(model); 
+                var eventoPersist = _mapper.Map<Evento>(model); //mapeia de eventoDto para Evento(persit)
+                
+                // Insere no banco
+                _eventoPersistence.Add<Evento>(eventoPersist); 
 
-                // if (await _eventoPersistence.SaveChangesAsync())
-                // {
-                //     return await _eventoPersistence.GetEventoByIdAsync(model.Id, false);   
-                // }
+                if (await _eventoPersistence.SaveChangesAsync())
+                {
+                    var eventoResult = await _eventoPersistence.GetEventoByIdAsync(model.Id, false); //retorna um evento Persiste(classe de dominio)
+                    var eventoDto = _mapper.Map<EventoDto>(eventoPersist); //Converte(mapeia) o dominio Evento para EventoDto
+                    return eventoDto;
+                }
                 return null;
             }
             catch (Exception ex)
@@ -45,17 +50,25 @@ namespace Proeventos.Application
         {
             try
             {
-                // var evento = await _eventoPersistence.GetEventoByIdAsync(eventoId);
-                // // if(evento == null) return null;
-                // if (evento != null)
-                // {
-                //     _eventoPersistence.Update(model);
+                var eventoPersit = _mapper.Map<Evento>(model); // Mapeia a EventoDto para Evento(Persistencia);
+                var evento = await _eventoPersistence.GetEventoByIdAsync(eventoId);
+                // evento.Id = eventoId;
+                eventoPersit.Id = eventoId;
+
+                //verifica existencia do objeto
+                if (evento != null)
+                {   
+                    // _mapper.Map(model, evento);// Mapeia de EventoDto para Evento(Persistencia);
+                    _eventoPersistence.Update(eventoPersit);
+                    // _eventoPersistence.Update<Evento>(evento);
                     
-                //     if (await _eventoPersistence.SaveChangesAsync())
-                //     {
-                //         return await _eventoPersistence.GetEventoByIdAsync(eventoId);
-                //     }
-                // }
+                    if (await _eventoPersistence.SaveChangesAsync())
+                    {
+                        var eventorResult = await _eventoPersistence.GetEventoByIdAsync(eventoPersit.Id, false);
+                        
+                        return _mapper.Map<EventoDto>(eventorResult);
+                    }
+                }
                 return null;
             }
             catch (Exception ex)

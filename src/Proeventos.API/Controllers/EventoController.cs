@@ -20,10 +20,8 @@ using Proeventos.DTO;
         {
             try
             {
-                
-                // var teste = new EventoDto();
                 var eventos = await _eventoService.GetAllEventoAsync(palestrante);
-                return eventos != null ? Ok(eventos) : NotFound("Nenhum evento encontrado!");
+                return eventos != null ? Ok(eventos) : NoContent();
             }
             catch (Exception ex)
             {
@@ -38,7 +36,7 @@ using Proeventos.DTO;
             try
             {
                 var evento = await _eventoService.GetEventoByIdAsync(id,palestrante);
-                return evento != null ? Ok(evento) : NotFound("Nenhum evento encontrado!");
+                return evento != null ? Ok(evento) :  NoContent();;
             }
             catch (Exception ex)
             {
@@ -53,7 +51,7 @@ using Proeventos.DTO;
             try
             {
                 var evento = await _eventoService.GetAllEventosByTemaAsync(tema,palestrante);
-                return evento != null ? Ok(evento) : NotFound("Nenhum evento encontrado!");
+                return evento != null ? Ok(evento) :  NoContent();
             }
             catch (Exception ex)
             {

@@ -11,7 +11,7 @@ namespace Proeventos.Domain
         public string Local { get; set; }
         public string ImgUrl { get; set; }
         public int QtdPessoas { get; set; }
-        public DateTime DataEvento { get; set; }
+        public DateTime? DataEvento { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
 

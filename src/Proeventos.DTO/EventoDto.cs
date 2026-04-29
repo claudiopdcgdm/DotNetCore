@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 
 namespace Proeventos.DTO
 {
@@ -13,11 +15,11 @@ namespace Proeventos.DTO
         public string Telefone { get; set; }
         public string Email { get; set; }
 
-        // public IEnumerable<Lote> Lotes  { get; set; }// (1 X N)
+        public ICollection<LoteDto> Lotes  { get; set; }// (1 X N)
         
-        // public IEnumerable<RedeSocial> RedesSociais { get; set; } // (1 X N)
+        public ICollection<RedeSocialDto> RedesSociais { get; set; } // (1 X N)
 
-        // public IEnumerable<PalestranteEvento> PalestrantesEventos { get; set; }//(N X N)
+        public ICollection<PalestranteDto> Palestrantes { get; set; }//(N X N)
         
         
     }
