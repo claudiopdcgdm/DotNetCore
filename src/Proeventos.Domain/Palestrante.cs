@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proeventos.Domain
 {
+    [Table("TbPalestrante")]
     public class Palestrante
     {
         public int Id { get; set; }

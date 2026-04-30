@@ -21,7 +21,6 @@ namespace Proeventos.API.Utils
             {
                 var schema = content.Value.Schema;
 
-                // 🔥 resolve referência ($ref)
                 if (schema.Reference != null)
                 {
                     var schemaName = schema.Reference.Id;
