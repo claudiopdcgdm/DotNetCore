@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Proeventos.API.Utils;
 using Proeventos.Application;
 using Proeventos.Application.Interfaces;
 using Proeventos.Persistence;
@@ -42,6 +43,7 @@ namespace Proeventos.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Proeventos.API", Version = "v1" });
+                c.OperationFilter<RemoveIdFromRequestFilter>();
             });
         }
 

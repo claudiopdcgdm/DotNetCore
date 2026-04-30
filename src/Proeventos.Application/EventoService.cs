@@ -31,7 +31,7 @@ namespace Proeventos.Application
 
                 if (await _eventoPersistence.SaveChangesAsync())
                 {
-                    var eventoResult = await _eventoPersistence.GetEventoByIdAsync(model.Id, false); //retorna um evento Persiste(classe de dominio)
+                    var eventoResult = await _eventoPersistence.GetEventoByIdAsync(eventoPersist.Id, false); //retorna um evento Persiste(classe de dominio)
                     var eventoDto = _mapper.Map<EventoDto>(eventoPersist); //Converte(mapeia) o dominio Evento para EventoDto
                     return eventoDto;
                 }
@@ -52,15 +52,12 @@ namespace Proeventos.Application
             {
                 var eventoPersit = _mapper.Map<Evento>(model); // Mapeia a EventoDto para Evento(Persistencia);
                 var evento = await _eventoPersistence.GetEventoByIdAsync(eventoId);
-                // evento.Id = eventoId;
                 eventoPersit.Id = eventoId;
 
                 //verifica existencia do objeto
                 if (evento != null)
                 {   
-                    // _mapper.Map(model, evento);// Mapeia de EventoDto para Evento(Persistencia);
                     _eventoPersistence.Update(eventoPersit);
-                    // _eventoPersistence.Update<Evento>(evento);
                     
                     if (await _eventoPersistence.SaveChangesAsync())
                     {

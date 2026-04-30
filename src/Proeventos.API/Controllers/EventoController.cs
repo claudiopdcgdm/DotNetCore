@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Proeventos.Application.Interfaces;
 using Proeventos.DTO;
 
-[Route("api/[controller]")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class EventoController : ControllerBase
     {
         private bool palestrante = true;
@@ -62,12 +63,12 @@ using Proeventos.DTO;
 
         [HttpPost]
         // [Consumes("application/json", "multipart/form-data")]
-        public async Task<ActionResult> Post([FromBody] EventoDto model)
+        public async Task<ActionResult> Post(EventoDto model)
         {
             try
             {
                 var evento = await _eventoService.AddEvento(model);
-                return evento != null ? Ok(evento) : BadRequest("Erro ao tentar inserir evento!");
+                return evento != null ? Created("",evento) : BadRequest("Erro ao tentar inserir evento!");
             }
             catch (Exception  ex)
             {
@@ -80,14 +81,8 @@ using Proeventos.DTO;
         {
             try
             {
-                // var evento = await _eventoService.GetEventoByIdAsync(id);
                 var evento = await _eventoService.UpdateEvento(id, model);
                 return evento != null ? Ok(evento): NotFound("Evento não encontrado!");
-                // if (evento != null)
-                // {
-                //     return Ok(evento);
-                // }
-                // return NotFound($"Evento {id}  não encontrado!");
             }
             catch (Exception ex)
             {
@@ -102,7 +97,7 @@ using Proeventos.DTO;
             try
             {
                 var evento = await  _eventoService.DeleteEvento(id);
-                return evento ? Ok("Deletado") : NotFound($"Evento {id}  não encontrado!");
+                return evento ? NoContent() : NotFound($"Evento {id}  não encontrado!");
             }
             catch (Exception ex)
             {
