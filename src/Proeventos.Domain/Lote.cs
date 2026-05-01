@@ -12,7 +12,7 @@ namespace Proeventos.Domain
         public DateTime? DataInicio { get; set; }
         public DateTime? DataFim { get; set; }
         public int Quantidade { get; set; }
-        public int EventoId { get; set; }
+        public int? EventoId { get; set; }
         public Evento Evento { get; set; }
         
     }

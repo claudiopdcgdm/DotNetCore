@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proeventos.Persistence;
 
 namespace Proeventos.Persistence.Migrations
 {
     [DbContext(typeof(ProeventosContext))]
-    partial class ProeventosContextModelSnapshot : ModelSnapshot
+    [Migration("20260430205612_AlterTableEventos")]
+    partial class AlterTableEventos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

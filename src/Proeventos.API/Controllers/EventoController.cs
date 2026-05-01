@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Proeventos.Application.Interfaces;
 using Proeventos.DTO;
 
+namespace Proeventos.API
+{
+
     [ApiController]
     [Route("api/[controller]")]
     public class EventoController : ControllerBase
@@ -106,3 +109,4 @@ using Proeventos.DTO;
             
         }
     }
+}
