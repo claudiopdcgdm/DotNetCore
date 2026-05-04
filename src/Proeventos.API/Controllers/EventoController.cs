@@ -1,5 +1,8 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proeventos.Application.Interfaces;
@@ -14,8 +17,11 @@ namespace Proeventos.API
     {
         private bool palestrante = true;
         private readonly IEventoService _eventoService;
-        public EventoController(IEventoService eventoService)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        
+        public EventoController(IEventoService eventoService,IWebHostEnvironment webHostEnvironment)
         {
+            this._webHostEnvironment = webHostEnvironment;
             this._eventoService = eventoService;
         }
 
@@ -79,6 +85,32 @@ namespace Proeventos.API
             }
         }  
 
+        [HttpPost("upload-image/{eventoId}")]
+        public async Task<ActionResult> UploadImage(int eventoId)
+        {
+            try
+            {
+                var evento = await _eventoService.GetEventoByIdAsync(eventoId);
+                if (evento != null)
+                {
+                    var file = Request.Form.Files[0];
+                    if (file.Length > 0)
+                    {
+                        DeleteImage(evento.ImgUrl);
+                        evento.ImgUrl = await SaveImage(file);
+                    }
+
+                    var resultEvent = await _eventoService.UpdateEvento(eventoId,evento);
+                    return Ok(resultEvent);
+                }
+                return NoContent();
+            }
+            catch (Exception  ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro no upload de Imagem! Erro: {ex.Message}");
+            }
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] EventoDto model)
         {
@@ -115,5 +147,48 @@ namespace Proeventos.API
             }
             
         }
+
+        
+        [NonAction]
+        private void DeleteImage(string imgUrl)
+        {
+            try
+            {
+                var imgPath = Path.Combine(_webHostEnvironment.ContentRootPath,@"Resources/Images",imgUrl);
+                if (System.IO.File.Exists(imgPath))
+                {
+                    System.IO.File.Delete(imgPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Falha ao deletar imagem: {ex.Message}");
+            }
+        }
+
+        [NonAction]
+        private async Task<string> SaveImage(IFormFile imgFile)
+        {
+            try
+            {
+                string nameImage = new String(Path.GetFileNameWithoutExtension(imgFile.FileName).Take(10).ToArray());
+                nameImage = nameImage.Replace(' ','-');
+                nameImage = $"{nameImage}{DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(imgFile.FileName)}";
+                var imgPath = Path.Combine(_webHostEnvironment.ContentRootPath,@"Resources/Images",nameImage);
+                using (var fileStream = new FileStream(imgPath,FileMode.Create))
+                {
+                    await imgFile.CopyToAsync(fileStream);
+                }  
+
+                return nameImage;
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao salvar imagem: {ex.Message}");
+            }
+            
+        }
+
     }
 }
