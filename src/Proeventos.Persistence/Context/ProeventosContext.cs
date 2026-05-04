@@ -22,11 +22,15 @@ namespace Proeventos.Persistence
             // Cria o relacionamento de n x n entre Evento e Palestrante
             modelBuilder.Entity<PalestranteEvento>().HasKey(pe => new {pe.EventoId,pe.PalestranteId});
 
-            // OnDeleteCascade para remover todas as redessociais quando o evento for excluído (Tab redeSocial possui chave multipla)
+            // OnDeleteCascade para remover todas as redessociais relacionadas ao evento quando o evento for excluído (Tab redeSocial possui chave multipla)
             modelBuilder.Entity<Evento>().HasMany(e => e.RedesSociais).WithOne(rs => rs.Evento).OnDelete(DeleteBehavior.Cascade);
 
+            // OnDeleteCascade para remover todas as redessociais relacionadas ao palestrante quando o evento for excluído (Tab redeSocial possui chave multipla)
             modelBuilder.Entity<Palestrante>().HasMany(p => p.RedesSociais).WithOne(rs => rs.Palestrante).OnDelete(DeleteBehavior.Cascade);
-            // modelBuilder.Entity<Palestrante>().HasMany(p => p.RedesSociais).WithOne(rs => rs.Palestrante).OnDeleteCascade();
+           
+            // OnDeleteCascade para remover todas as Lotes relacionados ao evento quando o evento for excluído (Tab redeSocial possui chave multipla)
+            modelBuilder.Entity<Evento>().HasMany(e => e.Lotes).WithOne(l => l.Evento).OnDelete(DeleteBehavior.Cascade);
+           
         }
         
         

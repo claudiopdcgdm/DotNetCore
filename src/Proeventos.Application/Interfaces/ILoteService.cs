@@ -28,7 +28,7 @@ namespace Proeventos.Application.Interfaces
         /// <param name="eventoId">The ID of the evento</param>
         /// <param name="model">The model of the Lote</param>
         /// <returns>A Lote Object</returns>
-        Task<LoteDto> SaveLote(int eventoId, LoteDto[] models);
+        Task<LoteDto[]> SaveLotes(int eventoId, LoteDto[] models);
 
         /// <summary>
         /// Remove a Lote for a specific Evento

@@ -10,6 +10,7 @@ using Proeventos.API.Utils;
 using Proeventos.Application;
 using Proeventos.Application.Interfaces;
 using Proeventos.Persistence;
+using Proeventos.Persistence.Interfaces;
 
 namespace Proeventos.API
 {
@@ -26,10 +27,16 @@ namespace Proeventos.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddCors();//Adiciona o cors
+            // INJEÇÃO DE SERVIÇOS
             services.AddScoped<IEventoService, EventoService>(); //injeta a classe concreta no scopo
+            services.AddScoped<ILoteService,LoteService>();
+
+            // INJEÇÃO DE PERSITENCIAS
             services.AddScoped<IEventoPersistence, EventoPersistence>(); //injeta a classe concreta no scopo
+            services.AddScoped<ILotePersistence, LotePersistence>();
             services.AddScoped<IPalestrantePersistence, PalestantePersistence>(); //injeta a classe concreta no scopo
+            
+            services.AddCors();//Adiciona o cors
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//puxa a classe eventoprofile dentro de helpers para mapeamento
             services.AddControllers()
                     //Corrigi o erro de chamada ciclica dos objetos do dominio

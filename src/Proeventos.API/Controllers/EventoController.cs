@@ -99,8 +99,15 @@ namespace Proeventos.API
         {
             try
             {
-                var evento = await  _eventoService.DeleteEvento(id);
-                return evento ? NoContent() : NotFound($"Evento {id}  não encontrado!");
+                var evento = await _eventoService.GetEventoByIdAsync(id);
+
+                if (evento != null)
+                {
+                    await  _eventoService.DeleteEvento(id);
+                    return Ok("Evento Deletado");
+                }
+                
+                return NotFound($"Evento {id}  não encontrado!");
             }
             catch (Exception ex)
             {

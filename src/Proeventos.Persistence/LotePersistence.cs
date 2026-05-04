@@ -18,7 +18,8 @@ namespace Proeventos.Persistence
         
         public async Task<Lote[]> GetLotesByEventoIdAsync(int eventoId)
         {
-            IQueryable<Lote> query = _context.Lotes.Include(l => l.Evento);
+            // IQueryable<Lote> query = _context.Lotes.Include(l => l.Evento);
+            IQueryable<Lote> query = _context.Lotes;
             query = query.AsNoTracking().OrderBy(l => l.Id).Where(l => l.EventoId == eventoId);
 
             return await query.AsSplitQuery().ToArrayAsync();

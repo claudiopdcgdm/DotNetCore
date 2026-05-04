@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proeventos.Application.Interfaces;
 using Proeventos.DTO;
@@ -20,14 +21,42 @@ namespace Proeventos.API
             
         }
         /// <summary>
-        /// Search Lotes for eventoId
+        /// Retrived Lote for evento and Lote
         /// </summary>
         /// <param name="eventoId">eventoId</param>
-        /// <returns>Lotes Collection</returns>
-        [HttpGet("{eventoId}")]
-        public Task<ActionResult> GetByEventoId(int eventoId)
+        /// <returns>Lote Obejct</returns>
+        [HttpGet("evento/{eventoId}/lote/{loteId}")]
+        public async Task<ActionResult> GetOneLoteAsync(int eventoId, int loteId)
         {
-            return null;
+            try
+            {
+                var lote = await _loteService.GetOneLoteAsync(eventoId,loteId);
+                return lote != null? Ok(lote):NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar LOTE. Erro: {ex.Message}");    
+            }
+        }
+        
+        /// <summary>
+        /// Retrived Lotes for eventoId
+        /// </summary>
+        /// <param name="eventoId">eventoId</param>
+        /// <returns>Lotes Obejct</returns>
+        [HttpGet("evento/{eventoId}")]
+        public async Task<ActionResult> GetLotesByEventoAsync(int eventoId)
+        {
+            try
+            {
+                var lotes = await _loteService.GetLotesByEventoAsync(eventoId);
+                return lotes != null ? Ok(lotes):NoContent();
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar LOTES. Erro: {ex.Message}");    
+            }
         }
 
         /// <summary>
@@ -36,10 +65,20 @@ namespace Proeventos.API
         /// <param name="eventoId">int eventoId</param>
         /// <param name="models">list LoteDto from body</param>
         /// <returns>LoteDto</returns>
-        [HttpPut("{eventoId}")]
-        public Task<ActionResult> Put(int eventoId, LoteDto[] models)
+        [HttpPut("evento/{eventoId}")]
+        public async Task<ActionResult> SaveLotes(int eventoId, LoteDto[] models)
         {
-            return null;
+           try
+            {
+                // var evento = await _eventoService.UpdateEvento(id, model);
+                var lote = await _loteService.SaveLotes(eventoId, models);
+                return lote != null ? Ok(lote): NotFound("Lote não encontrado!");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar Atualizar/Salvar Lotes. Erro: {ex.Message}");                
+            }
+            
         }
         /// <summary>
         /// Remove Lote from evento 
@@ -47,10 +86,26 @@ namespace Proeventos.API
         /// <param name="eventoId">int eventoId</param>
         /// <param name="loteId">int LoteId</param>
         /// <returns>bool (true=success,false=failed</returns>
-        [HttpDelete("{eventoId}/{loteId}")]
-        public Task<bool> Delete(int eventoId,int loteId)
+        [HttpDelete("evento/{eventoId}/lote/{loteId}")]
+        public async Task<ActionResult> Delete(int eventoId,int loteId)
         {
-            return null;
+            try
+            {
+                var lote = await _loteService.GetOneLoteAsync(eventoId,loteId);
+
+                if (lote != null)
+                {
+                    await _loteService.DeleteLote(eventoId,loteId); 
+                    return Ok("Lote Deletado!");
+                }
+                
+                return NotFound($"Lote {loteId} do Evento {eventoId} não encontrado!");
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao Excluir lote: {ex.Message}");
+            }
         }
     }
 }
