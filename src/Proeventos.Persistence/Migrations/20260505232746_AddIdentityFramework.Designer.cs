@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proeventos.Persistence;
 
 namespace Proeventos.Persistence.Migrations
 {
     [DbContext(typeof(ProeventosContext))]
-    partial class ProeventosContextModelSnapshot : ModelSnapshot
+    [Migration("20260505232746_AddIdentityFramework")]
+    partial class AddIdentityFramework
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace Proeventos.Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("TbRoleClaims");
+                    b.ToTable("AspNetRoleClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
@@ -57,7 +59,7 @@ namespace Proeventos.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TbUserClaims");
+                    b.ToTable("AspNetUserClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
@@ -78,7 +80,7 @@ namespace Proeventos.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TbUserLogins");
+                    b.ToTable("AspNetUserLogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -97,7 +99,7 @@ namespace Proeventos.Persistence.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("TbUserTokens");
+                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("Proeventos.Domain.Evento", b =>
@@ -163,7 +165,7 @@ namespace Proeventos.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("TbRoles");
+                    b.ToTable("AspNetRoles");
                 });
 
             modelBuilder.Entity("Proeventos.Domain.Identity.User", b =>
@@ -246,7 +248,7 @@ namespace Proeventos.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("TbUsers");
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Proeventos.Domain.Identity.UserRole", b =>
@@ -261,7 +263,7 @@ namespace Proeventos.Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("TbUserRoles");
+                    b.ToTable("AspNetUserRoles");
                 });
 
             modelBuilder.Entity("Proeventos.Domain.Lote", b =>
