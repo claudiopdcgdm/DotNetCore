@@ -85,8 +85,22 @@ namespace Proeventos.API
             }
         }  
 
+        // [HttpPost("upload-image/{eventoId}")]
+        // [Consumes("multipart/form-data")]
+        // public async Task<IActionResult> UploadImage(
+        //     [FromRoute] int eventoId,
+        //     [FromForm(Name = "file")] IFormFile file)
+        // {
+        //     if (file == null || file.Length == 0)
+        //         return BadRequest("Arquivo inválido");
+
+        //     var nomeImagem = await SaveImage(file);
+
+        //     return Ok(new { eventoId, nomeImagem });
+        // }
         [HttpPost("upload-image/{eventoId}")]
-        public async Task<ActionResult> UploadImage(int eventoId)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult> UploadImage(int eventoId, [FromForm] IFormFile imgFile)
         {
             try
             {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Proeventos.Domain.Identity;
 
 namespace Proeventos.Domain
 {
@@ -12,7 +13,8 @@ namespace Proeventos.Domain
         public string Telefone { get; set; }
         public string Email { get; set; }
         public string ImgUrl { get; set; }
-        
+        public int UserId { get; set; }
+        public User User { get; set; }
         public IEnumerable<RedeSocial> RedesSociais { get; set; }
         public IEnumerable<PalestranteEvento> PalestrantesEventos { get; set; }
     }

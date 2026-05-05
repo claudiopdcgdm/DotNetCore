@@ -54,6 +54,7 @@ namespace Proeventos.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Proeventos.API", Version = "v1" });
                 c.OperationFilter<RemoveIdFromRequestFilter>();
+                c.OperationFilter<FileUploadOperationFilter>();
             });
         }
 
