@@ -14,6 +14,9 @@ using Proeventos.Application;
 using Proeventos.Application.Interfaces;
 using Proeventos.Persistence;
 using Proeventos.Persistence.Interfaces;
+using System.Text.Json.Serialization;
+using Proeventos.Domain.Identity;
+
 
 namespace Proeventos.API
 {
@@ -31,20 +34,36 @@ namespace Proeventos.API
         {
 
             // INJEÇÃO DE SERVIÇOS
-            services.AddScoped<IEventoService, EventoService>(); //injeta a classe concreta no scopo
+            services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<ILoteService,LoteService>();
+            services.AddScoped<IAccountService,AccountService>();
+            services.AddScoped<ITokenService,TokenService>();
 
             // INJEÇÃO DE PERSITENCIAS
-            services.AddScoped<IEventoPersistence, EventoPersistence>(); //injeta a classe concreta no scopo
+            services.AddScoped<IEventoPersistence, EventoPersistence>(); 
             services.AddScoped<ILotePersistence, LotePersistence>();
-            services.AddScoped<IPalestrantePersistence, PalestantePersistence>(); //injeta a classe concreta no scopo
+            services.AddScoped<IPalestrantePersistence, PalestantePersistence>(); 
+            services.AddScoped<IUserPersistence, UserPersistence>(); 
+
+            //Adiciona o cors
+            services.AddCors();
             
-            services.AddCors();//Adiciona o cors
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//puxa a classe eventoprofile dentro de helpers para mapeamento
+            //puxa a classe eventoprofile dentro de helpers para mapeamento
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddIdentityCore<User>(options => 
+            {
+                
+            });
+
+            //Controllers config
             services.AddControllers()
-                    //Corrigi o erro de chamada ciclica dos objetos do dominio
+                    // Configura o Enum para retornar o nome ao inves de indices
+                    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new  JsonStringEnumConverter()))
+                    // Corrigi o erro de chamada ciclica dos objetos do dominio
                     .AddNewtonsoftJson(
                         c => c.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    
                     );
             services.AddDbContext<ProeventosContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
