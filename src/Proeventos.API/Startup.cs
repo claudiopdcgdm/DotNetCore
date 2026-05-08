@@ -16,22 +16,55 @@ using Proeventos.Persistence;
 using Proeventos.Persistence.Interfaces;
 using System.Text.Json.Serialization;
 using Proeventos.Domain.Identity;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Proeventos.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration) 
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
+   
         }
+         public IConfiguration Configuration { get; }
 
-        public IConfiguration Configuration { get; }
+      
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Configurações do Identity default
+            services.AddIdentityCore<User>(options => 
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric=false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase=false;
+                options.Password.RequiredLength = 6;
+
+            })
+            .AddRoles<Role>()
+            .AddRoleManager<RoleManager<Role>>()
+            .AddSignInManager<SignInManager<User>>()
+            .AddRoleValidator<RoleValidator<Role>>()
+            .AddEntityFrameworkStores<ProeventosContext>()
+            .AddDefaultTokenProviders();
+
+            //CONFIGURAÇÃO DE AUTENTICAÇÃO VIA TOKEN
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                };
+            });
 
             // INJEÇÃO DE SERVIÇOS
             services.AddScoped<IEventoService, EventoService>();
@@ -51,10 +84,7 @@ namespace Proeventos.API
             //puxa a classe eventoprofile dentro de helpers para mapeamento
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddIdentityCore<User>(options => 
-            {
-                
-            });
+           
 
             //Controllers config
             services.AddControllers()
