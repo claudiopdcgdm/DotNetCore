@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proeventos.Domain.Identity
 {
-    [Table("TbUser")]
+    // [Table("TbUser")]
     public class User : IdentityUser<int>
     {
         public string FirstName { get; set; }

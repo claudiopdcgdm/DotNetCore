@@ -27,7 +27,8 @@ namespace Proeventos.Application
             this._userManager = userManager;
             
         }
-        public async Task<SignInResult> CheckUserPasswordAsync(UserUpdateDto model, string passowrd)
+
+        public async Task<SignInResult> CheckUserPasswordAsync(UserUpdateDto model, string password)
         {
           try
           {
@@ -39,7 +40,7 @@ namespace Proeventos.Application
                {
                    return null;
                }
-               return await _signInManager.CheckPasswordSignInAsync(user,passowrd,false);
+               return await _signInManager.CheckPasswordSignInAsync(user,password,false);
           }
           catch (Exception ex)
           {

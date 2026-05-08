@@ -10,8 +10,8 @@ namespace Proeventos.DTO
         public int Id { get; set; }
         public string Titulo { get; set; }
         public string UserName { get; set; }
-        public string PrimeiroNome { get; set; }
-        public string UltimoNome { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Funcao { get; set; }

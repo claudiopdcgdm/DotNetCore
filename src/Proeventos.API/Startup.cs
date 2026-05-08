@@ -120,7 +120,9 @@ namespace Proeventos.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            
+            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.UseCors(acesso => acesso.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
