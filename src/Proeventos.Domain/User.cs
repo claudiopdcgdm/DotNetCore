@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using Proeventos.Domain.Enum;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Proeventos.Domain.Identity
+namespace Proeventos.Domain
 {
-    // [Table("TbUser")]
     public class User : IdentityUser<int>
     {
         public string FirstName { get; set; }

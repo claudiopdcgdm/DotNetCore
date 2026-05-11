@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proeventos.Application.Interfaces;
 using Proeventos.DTO;
-
+using Proeventos.API.Extensions;
 namespace Proeventos.API.Controllers
 {
     [Authorize]
@@ -28,7 +29,7 @@ namespace Proeventos.API.Controllers
         
         [HttpPost("Register")]
         [AllowAnonymous]
-        public async Task<ActionResult> Register(UserDto model)
+        public async Task<IActionResult> Register(UserDto model)
         {
             try
             {
@@ -51,7 +52,7 @@ namespace Proeventos.API.Controllers
 
         [HttpPost("SignIn")]
         [AllowAnonymous]
-        public async Task<ActionResult> SignIn(UserLoginDto model)
+        public async Task<IActionResult> SignIn(UserLoginDto model)
         {
             try
             {
@@ -84,14 +85,32 @@ namespace Proeventos.API.Controllers
             }
         }
 
-        [HttpGet("GetUSer/{userName}")]
-        // [AllowAnonymous]
-        public async Task<ActionResult> GetUser(string userName)
+        // [HttpGet("GetUser/{userName}")]
+        // // [AllowAnonymous]
+        // public async Task<ActionResult<UserUpdateDto>> GetUser(string userName)
+        // {
+        //     try
+        //     {
+        //          var user = await _accountService.GetUserByUserNameAsync(userName);
+        //          return user != null ? Ok(user) : BadRequest("Usuário não encontrado!");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar Usuario.{ex.Message}");                
+        //     }
+        // }
+        
+        [HttpGet("GetUser")]
+        public async Task<ActionResult<UserUpdateDto>> GetUser()
         {
             try
             {
-                 var user = await _accountService.GetUserByUserNameAsync(userName);
-                 return user != null ? Ok(user) : BadRequest("Usuário não encontrado!");
+                //User nesse caso é da CLaims do controller
+                // Recupera os dados do usuário pelo token
+                var userName = User.FindFirst(ClaimTypes.Name)?.Value; 
+                // var userName = User.GetUserName();
+                var user = await _accountService.GetUserByUserNameAsync(userName);
+                return user != null ? Ok(user) : BadRequest("Usuário não encontrado!");
             }
             catch (Exception ex)
             {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Proeventos.Domain.Identity;
+using Proeventos.Domain;
 
 namespace Proeventos.Domain
 {

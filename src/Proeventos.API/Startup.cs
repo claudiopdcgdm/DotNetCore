@@ -15,11 +15,11 @@ using Proeventos.Application.Interfaces;
 using Proeventos.Persistence;
 using Proeventos.Persistence.Interfaces;
 using System.Text.Json.Serialization;
-using Proeventos.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Proeventos.Domain;
 
 namespace Proeventos.API
 {

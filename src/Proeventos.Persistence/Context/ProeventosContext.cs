@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Proeventos.Domain;
-using Proeventos.Domain.Identity;
+
 
 namespace Proeventos.Persistence
 {

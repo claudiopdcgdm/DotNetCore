@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Proeventos.Domain.Identity;
+using Proeventos.Domain;
 using Proeventos.Persistence.Interfaces;
 
 namespace Proeventos.Persistence
@@ -34,10 +34,13 @@ namespace Proeventos.Persistence
 
         public async Task<User> GetUserByUserNameAsync(string userName)
         {
-            IQueryable<User> query = _context.Users.Where(u => u.UserName == userName.ToLower());
-            query = query.AsNoTracking().OrderBy(u => u.UserName);
+            // IQueryable<User> query = _context.Users.Where(u => u.UserName == userName.ToLower());
+            // query = query.AsNoTracking().OrderBy(u => u.UserName);
 
-            return await query.AsSplitQuery().SingleOrDefaultAsync();
+            // return await query.AsSplitQuery().SingleOrDefaultAsync();
+            var result = await _context.Users.SingleOrDefaultAsync(user => user.UserName == userName.ToLower());
+            Console.WriteLine(result.UserName);
+            return result;
         }
 
         public async Task<ICollection<User>> GetUserByNameAsync(string name)

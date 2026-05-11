@@ -15,7 +15,7 @@ namespace Proeventos.API
     [Route("api/[controller]")]
     public class EventoController : ControllerBase
     {
-        private bool palestrante = true;
+        private readonly bool palestrante = true;
         private readonly IEventoService _eventoService;
         private readonly IWebHostEnvironment _webHostEnvironment;
         

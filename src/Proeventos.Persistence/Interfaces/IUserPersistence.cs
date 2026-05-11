@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Proeventos.Domain.Identity;
+using Proeventos.Domain;
 
 namespace Proeventos.Persistence.Interfaces
 {

@@ -8,11 +8,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Proeventos.Application.Interfaces;
-using Proeventos.Domain.Identity;
 using Proeventos.DTO;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-
+using Proeventos.Domain;
 
 namespace Proeventos.Application
 {

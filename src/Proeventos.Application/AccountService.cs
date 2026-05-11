@@ -6,7 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Proeventos.Application.Interfaces;
-using Proeventos.Domain.Identity;
+using Proeventos.Domain;
 using Proeventos.DTO;
 using Proeventos.Persistence.Interfaces;
 
