@@ -39,7 +39,7 @@ namespace Proeventos.Persistence
 
             // return await query.AsSplitQuery().SingleOrDefaultAsync();
             var result = await _context.Users.SingleOrDefaultAsync(user => user.UserName == userName.ToLower());
-            Console.WriteLine(result.UserName);
+            // Console.WriteLine(result.UserName);
             return result;
         }
 

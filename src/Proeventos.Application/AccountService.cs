@@ -48,7 +48,7 @@ namespace Proeventos.Application
           }
         }
 
-        public async Task<UserDto> CreateAccountAsync(UserDto model)
+        public async Task<UserUpdateDto> CreateAccountAsync(UserDto model)
         {
            try
            {
@@ -57,7 +57,7 @@ namespace Proeventos.Application
 
                 if (result.Succeeded)
                 {
-                    var userDto = _mapper.Map<UserDto>(userDomain); //mapeia de Dominio para Dto
+                    var userDto = _mapper.Map<UserUpdateDto>(userDomain); //mapeia de Dominio para Dto
                     return userDto;
                 }
                 return null;

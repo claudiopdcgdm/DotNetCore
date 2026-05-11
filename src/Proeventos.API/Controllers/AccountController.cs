@@ -85,21 +85,30 @@ namespace Proeventos.API.Controllers
             }
         }
 
-        // [HttpGet("GetUser/{userName}")]
-        // // [AllowAnonymous]
-        // public async Task<ActionResult<UserUpdateDto>> GetUser(string userName)
-        // {
-        //     try
-        //     {
-        //          var user = await _accountService.GetUserByUserNameAsync(userName);
-        //          return user != null ? Ok(user) : BadRequest("Usuário não encontrado!");
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar Usuario.{ex.Message}");                
-        //     }
-        // }
         
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser(UserUpdateDto model)
+        {
+            try
+            {
+                var userUpdateDto = await _accountService.GetUserByUserNameAsync(User.GetUserName());
+                
+                // verifica se usuario existe
+                if (userUpdateDto != null)
+                {
+                    var userUpdate = await _accountService.UpdateaAccount(model);
+                    return userUpdate != null ? Ok(userUpdate):BadRequest("Erro a tentar atualizar dados!");
+                    
+                }
+                return BadRequest("Usuário não cadastrado!");
+
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar atualizar dados do usuário.{ex.Message}");                
+            }
+        }
+
         [HttpGet("GetUser")]
         public async Task<ActionResult<UserUpdateDto>> GetUser()
         {
@@ -107,8 +116,8 @@ namespace Proeventos.API.Controllers
             {
                 //User nesse caso é da CLaims do controller
                 // Recupera os dados do usuário pelo token
-                var userName = User.FindFirst(ClaimTypes.Name)?.Value; 
-                // var userName = User.GetUserName();
+                // var userName = User.FindFirst(ClaimTypes.Name)?.Value; 
+                var userName = User.GetUserName();
                 var user = await _accountService.GetUserByUserNameAsync(userName);
                 return user != null ? Ok(user) : BadRequest("Usuário não encontrado!");
             }
