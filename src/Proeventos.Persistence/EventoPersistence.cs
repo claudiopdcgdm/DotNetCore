@@ -8,49 +8,43 @@ namespace Proeventos.Persistence
 {
     public class EventoPersistence : BasePersistence, IEventoPersistence
     {   
-        // private readonly ProeventosContext _context;
-        // public EventoPersistence(ProeventosContext context)
-        // {
-        //     this._context = context;
-        // }
-        
 
         public EventoPersistence(ProeventosContext context):base(context)
         {
         }
         
-        public async Task<Evento[]> GetAllEventoAsync(bool includePalestrantes = false)
+        public async Task<Evento[]> GetAllEventoAsync(int userId, bool includePalestrantes = false)
         {
             IQueryable<Evento> sql = _context.Eventos.Include(e => e.Lotes).Include(e=> e.RedesSociais);
 
             if(includePalestrantes){
                 sql = sql.Include(pe => pe.PalestrantesEventos).ThenInclude(pa => pa.Palestrante);
             }
-            sql = sql.OrderBy(e => e.Id);
+            sql = sql.Where(evento => evento.UserId == userId).OrderBy(e => e.Id);
 
             return await sql.AsSplitQuery().ToArrayAsync();
         }
 
-        public async Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes = false)
+        public async Task<Evento[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
         {
             IQueryable<Evento> sql = _context.Eventos.Include(e => e.Lotes).Include(e=> e.RedesSociais);
 
             if(includePalestrantes){
                 sql = sql.Include(pe => pe.PalestrantesEventos).ThenInclude(pa => pa.Palestrante);
             }
-            sql = sql.OrderBy(e => e.Id).Where(e => e.Tema.ToLower().Contains(tema.ToLower()));
+            sql = sql.OrderBy(e => e.Id).Where(e => e.Tema.ToLower().Contains(tema.ToLower()) && e.UserId == userId);
 
             return await sql.AsSplitQuery().ToArrayAsync();
         }
 
-        public async Task<Evento> GetEventoByIdAsync(int eventoId, bool includePalestrantes= false)
+        public async Task<Evento> GetEventoByIdAsync(int userId, int eventoId, bool includePalestrantes= false)
         {
             IQueryable<Evento> sql = _context.Eventos.Include(e => e.Lotes).Include(e=> e.RedesSociais);
 
             if(includePalestrantes){
                 sql = sql.Include(pe => pe.PalestrantesEventos).ThenInclude(pa => pa.Palestrante);
             }
-            sql = sql.AsNoTracking().OrderBy(e => e.Id).Where(e => e.Id == eventoId);
+            sql = sql.AsNoTracking().OrderBy(e => e.Id).Where(e => e.Id == eventoId && e.UserId == userId);
 
             return await sql.AsSplitQuery().FirstOrDefaultAsync();
         }

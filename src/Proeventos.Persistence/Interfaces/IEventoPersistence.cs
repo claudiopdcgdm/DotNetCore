@@ -7,9 +7,9 @@ namespace Proeventos.Persistence
     public interface IEventoPersistence:IBasePersistence
     {
         
-        Task<Evento[]> GetAllEventoAsync(bool includePalestrantes = false);
-        Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes = false);
-        Task<Evento> GetEventoByIdAsync(int eventoId, bool includePalestrantes = false);
+        Task<Evento[]> GetAllEventoAsync(int userId, bool includePalestrantes = false);
+        Task<Evento[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false);
+        Task<Evento> GetEventoByIdAsync(int userId, int eventoId, bool includePalestrantes = false);
 
     }
 }

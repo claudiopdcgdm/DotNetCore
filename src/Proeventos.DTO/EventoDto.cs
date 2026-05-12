@@ -44,6 +44,8 @@ namespace Proeventos.DTO
         ]
         public string Email { get; set; }
 
+        public int UserId { get; set; }
+        public UserDto UserDto { get; set; }
         public ICollection<LoteDto> Lotes  { get; set; }// (1 X N)
         
         public ICollection<RedeSocialDto> RedesSociais { get; set; } // (1 X N)
