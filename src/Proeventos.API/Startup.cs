@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Proeventos.Domain;
+using System.Collections.Generic;
 
 namespace Proeventos.API
 {
@@ -99,11 +100,37 @@ namespace Proeventos.API
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Proeventos.API", Version = "v1" });
-                c.OperationFilter<RemoveIdFromRequestFilter>();
-                c.OperationFilter<FileUploadOperationFilter>();
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Proeventos.API", Version = "v1" });
+                options.OperationFilter<RemoveIdFromRequestFilter>();
+                options.OperationFilter<FileUploadOperationFilter>();
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header from Header.
+                                    Input Bearer <token>. Sample: Bearer t0k3ns4mpl3d123..
+                                    ",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement(){
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 
